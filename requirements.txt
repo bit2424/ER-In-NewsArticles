@@ -2,3 +2,4 @@ flask
 flask-bootstrap
 newsapi-python
 transformers
+torch
