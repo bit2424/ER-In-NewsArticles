@@ -1,11 +1,11 @@
 import News
-#import Identificator
+import Identificator
 import Companies
 
 
 
 def main():
-    testCompaniesRetrieval()
+    testIdentifyCompaniesInNews()
 
 
 def testNewsArticlesRetrieval():
@@ -34,6 +34,26 @@ def testCompaniesRetrieval():
 
     for comp in data['entities']:
         print(comp['properties']['identifier']['value']+ " ---- " + comp['properties']['short_description'])
+
+def testIdentifyCompaniesInNews():
+    news = News.getArticles('Gaming', '','en','2022-04-13','2022-03-13',50)
+    found_companies = Identificator.identify_companies_in_news(news)
+    for k,v in found_companies.items():
+        print(v['name'] + ': ' + v['description'])
+        print('Found in')
+        for url in v['urls']:
+            print(url)
+        print()
+
+def testIdentifyandVerifyCompaniesInNews():
+    news = News.getArticles('Gaming', '','en','2022-04-13','2022-03-13',50)
+    found_companies = Identificator.identify_companies_in_news(news)
+    for k,v in found_companies.items():
+        print(v['name'] + ': ' + v['description'])
+        print('Found in')
+        for url in v['urls']:
+            print(url)
+        print()
 
 if __name__ == "__main__":
     main()
