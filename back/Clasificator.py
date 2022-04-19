@@ -19,6 +19,5 @@ def addNewsClass(news):
 
 def addCompaniesClass(posible_companies):
     for comp in posible_companies['entities']:
-        print(comp['identifier']['value'] + " ---- " + comp['short_description'])
         pred_results = clasifyText(comp['short_description'])
         comp['class'] = pred_results

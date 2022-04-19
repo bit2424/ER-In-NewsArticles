@@ -11,10 +11,11 @@ nlp = pipeline("ner", model=model, tokenizer=tokenizer)
 #
 def identify_companies_in_news(news):
   found_companies = {}
+  nid = 0
   for n in news:
     #print(n)
     content =  n['description'] + '.' + n['content']
-    url = n['url']
+  
     #print(n['title'] + ': ' + n['description'])
     #proper_names = preprocess_article(content)
     ner_results = nlp(content)
@@ -25,11 +26,12 @@ def identify_companies_in_news(news):
           if curr_company != '' :
             if curr_company not in found_companies:
               #Here we could check if you can find the company
-              found_companies[curr_company] = {'name': curr_company,'score': entity['score'],'description': "", 'urls': [url], 'content': [content]}
+              found_companies[curr_company] = {'name': curr_company,'score': entity['score'],'description': "", 'newsid': [nid]}
+              nid+=1
             else:
-              if url not in found_companies[curr_company]['urls']:
-                found_companies[curr_company]['urls'].append(url)
-                found_companies[curr_company]['content'].append(content)
+              if nid not in found_companies[curr_company]['newsid']:
+                found_companies[curr_company]['newsid'].append(nid)
+
               found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , entity['score'])
 
             #print("Complete: "+curr_company)
@@ -42,12 +44,12 @@ def identify_companies_in_news(news):
         
         #print(entity['entity']+" "+entity['word'])
   last_entity = ner_results[len(ner_results)-1]
+  nid=-1
   if curr_company not in found_companies:
-    found_companies[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'urls': [url], 'content': [content]}
+    found_companies[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'newsid': [nid]}
   else:
-    if url not in found_companies[curr_company]['urls']:
-      found_companies[curr_company]['urls'].append(url)
-      found_companies[curr_company]['content'].append(content)
+    if nid not in found_companies[curr_company]['newsid']:
+      found_companies[curr_company]['newsid'].append(nid)
     found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , last_entity['score'])
   
   not_fitted_elements = []

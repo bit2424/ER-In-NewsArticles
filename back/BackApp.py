@@ -14,7 +14,7 @@ def main():
 def testNewsArticlesRetrieval():
     articles = News.getArticles('Politics', '','en','2022-04-13','2022-03-13',15)
     for article_content in articles:
-        print(article_content['title']+' '+article_content['url'])
+        print(article_content['title']+' '+article_content['newsid'])
 
 
 def testCompanyInfoRetrieval():
@@ -45,12 +45,12 @@ def testIdentifyCompaniesInNews():
     for k,v in found_companies.items():
         print(v['name'] + ': ' + v['score'])
         print('Found in')
-        for url in v['urls']:
-            print(url)
+        for newsid in v['newsid']:
+            print(newsid)
         print()
 
 def testIdentifyandVerifyCompaniesInNews():
-    news = News.getArticles('Coffee', '','en','2022-04-13','2022-03-13',10)
+    news = News.getArticles('Cars', '','en','2022-04-13','2022-03-13',10)
     Clasificator.addNewsClass(news)
     found_companies = Identificator.identify_companies_in_news(news)
     
@@ -62,11 +62,13 @@ def testIdentifyandVerifyCompaniesInNews():
         for comp in posible_companies['entities']:
             print(comp['identifier']['value'] + " ---- " + comp['short_description'])
             for c in comp['class']:
-                print(c['label']+" ",c['score'])
+                print("tag: "+c['label']+" ",c['score'])
 
         print('\n Found in next news: ')
-        for url in v['urls']:
-            print(url)
+        for newsid in v['newsid']:
+            print(news[newsid]['url'])
+            for c in news[newsid]['class']:
+                print(c['label']+" ",c['score'])
         print()
 
 def testNewsClasification():
