@@ -9,12 +9,11 @@ nlp = pipeline("ner", model=model, tokenizer=tokenizer)
 
 #Return a list of candidate companies that appear in a list of news articles 
 #
-#
 def identify_companies_in_news(news):
   found_companies = {}
   for n in news:
     #print(n)
-    content = n['title'] + '.' + n['description'] + '.' + n['content']
+    content =  n['description'] + '.' + n['content']
     url = n['url']
     #print(n['title'] + ': ' + n['description'])
     #proper_names = preprocess_article(content)
@@ -26,10 +25,11 @@ def identify_companies_in_news(news):
           if curr_company != '' :
             if curr_company not in found_companies:
               #Here we could check if you can find the company
-              found_companies[curr_company] = {'name': curr_company,'score': entity['score'],'description': "", 'urls': [url]}
+              found_companies[curr_company] = {'name': curr_company,'score': entity['score'],'description': "", 'urls': [url], 'content': [content]}
             else:
               if url not in found_companies[curr_company]['urls']:
                 found_companies[curr_company]['urls'].append(url)
+                found_companies[curr_company]['content'].append(content)
               found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , entity['score'])
 
             #print("Complete: "+curr_company)
@@ -43,10 +43,11 @@ def identify_companies_in_news(news):
         #print(entity['entity']+" "+entity['word'])
   last_entity = ner_results[len(ner_results)-1]
   if curr_company not in found_companies:
-    found_companies[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'description': '', 'urls': [url]}
+    found_companies[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'urls': [url], 'content': [content]}
   else:
     if url not in found_companies[curr_company]['urls']:
       found_companies[curr_company]['urls'].append(url)
+      found_companies[curr_company]['content'].append(content)
     found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , last_entity['score'])
   
   not_fitted_elements = []
@@ -87,3 +88,4 @@ def identify_companies_in_text(n):
       #print(entity['entity']+" "+entity['word'])
 
   return found_companies
+

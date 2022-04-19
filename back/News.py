@@ -21,7 +21,7 @@ def getArticles(newsTopic,newsSources,newsLanguge, newsFromDate , newsTillDate, 
                                         sort_by='relevancy',
                                         page=1,
                                         page_size= numbResults)
-    
+
     return all_articles['articles']
 
 
