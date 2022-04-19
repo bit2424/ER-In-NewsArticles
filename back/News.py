@@ -1,6 +1,6 @@
 from newsapi import NewsApiClient
 
-searchDomains = 'npr.org,c-span.org,economist.com,apnews.com,bbc.com,techcrunch.com'
+searchDomains = 'c-span.org,economist.com,apnews.com,bbc.com,techcrunch.com'
 
 #The keys of the collection of articles are ['status', 'totalResults', 'articles'])
 #The keys of one article are ['source', 'author', 'title', 'description', 'url', 'urlToImage', 'publishedAt', 'content']

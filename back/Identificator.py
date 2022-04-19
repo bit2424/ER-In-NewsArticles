@@ -11,7 +11,7 @@ nlp = pipeline("ner", model=model, tokenizer=tokenizer)
 #
 #
 def identify_companies_in_news(news):
-  companies_temp = {}
+  found_companies = {}
   for n in news:
     #print(n)
     content = n['title'] + '.' + n['description'] + '.' + n['content']
@@ -24,13 +24,13 @@ def identify_companies_in_news(news):
       if 'ORG' in entity['entity']:
         if 'B' in entity['entity'] and "##" not in entity['word']:
           if curr_company != '' :
-            if curr_company not in companies_temp:
+            if curr_company not in found_companies:
               #Here we could check if you can find the company
-              companies_temp[curr_company] = {'name': curr_company,'score': entity['score'],'description': "", 'urls': [url]}
+              found_companies[curr_company] = {'name': curr_company,'score': entity['score'],'description': "", 'urls': [url]}
             else:
-              if url not in companies_temp[curr_company]['urls']:
-                companies_temp[curr_company]['urls'].append(url)
-              companies_temp[curr_company]['score'] = max(companies_temp[curr_company]['score'] , entity['score'])
+              if url not in found_companies[curr_company]['urls']:
+                found_companies[curr_company]['urls'].append(url)
+              found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , entity['score'])
 
             #print("Complete: "+curr_company)
           curr_company = entity['word']
@@ -42,17 +42,26 @@ def identify_companies_in_news(news):
         
         #print(entity['entity']+" "+entity['word'])
   last_entity = ner_results[len(ner_results)-1]
-  if curr_company not in companies_temp:
-    companies_temp[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'description': '', 'urls': [url]}
+  if curr_company not in found_companies:
+    found_companies[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'description': '', 'urls': [url]}
   else:
-    if url not in companies_temp[curr_company]['urls']:
-      companies_temp[curr_company]['urls'].append(url)
-    companies_temp[curr_company]['score'] = max(companies_temp[curr_company]['score'] , last_entity['score'])
-    
-  return companies_temp
+    if url not in found_companies[curr_company]['urls']:
+      found_companies[curr_company]['urls'].append(url)
+    found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , last_entity['score'])
+  
+  not_fitted_elements = []
+  for k,v in found_companies.items():
+      if(v['score']<0.75):
+        not_fitted_elements.append(k)
+        print(v['name'] + ': ', v['score'])
+
+  for k in not_fitted_elements:
+    del found_companies[k]
+
+  return found_companies
 
 def identify_companies_in_text(n):
-  companies_temp = {}
+  found_companies = {}
   #print(n)
   #print(n['title'] + ': ' + n['description'])
   #proper_names = preprocess_article(content)
@@ -62,11 +71,10 @@ def identify_companies_in_text(n):
     if 'ORG' in entity['entity']:
       if 'B' in entity['entity'] and "##" not in entity['word']:
         if curr_company != '' :
-          if curr_company not in companies_temp:
-            #Here we could check if you can find the company
-            companies_temp[curr_company] = {'name': curr_company,'score': entity['score']}
+          if curr_company not in found_companies:
+            found_companies[curr_company] = {'name': curr_company,'score': entity['score']}
           else:
-            companies_temp[curr_company]['score'] = max(companies_temp[curr_company]['score'] , entity['score'])
+            found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , entity['score'])
 
           #print("Complete: "+curr_company)
         curr_company = entity['word']
@@ -76,11 +84,6 @@ def identify_companies_in_text(n):
         else:
           curr_company += " "+entity['word']
         
-        #print(entity['entity']+" "+entity['word'])
-    
-  return companies_temp
+      #print(entity['entity']+" "+entity['word'])
 
-
-example = "However, a small number, including Burger King and UK retailer Marks and Spencer (M&S), have been unable to do so because their stores are run by franchise partners under complex legal arrangements."
-results = identify_companies_in_text(example)
-print(results)
+  return found_companies

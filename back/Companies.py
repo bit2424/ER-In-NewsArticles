@@ -20,8 +20,11 @@ def getCompanyInfo(company):
   response = requests.request("GET", url, headers=headers, params=querystring)
 
   #print(response.text)
+  
+  data = {}
 
-  data = json.loads(response.text)
+  if(response != None):
+    data = json.loads(response.text)
 
   #print(data.keys())
   
