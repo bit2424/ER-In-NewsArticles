@@ -5,7 +5,8 @@ import Companies
 
 
 def main():
-    testIdentifyCompaniesInNews()
+    testIdentifyandVerifyCompaniesInNews()
+    
 
 
 def testNewsArticlesRetrieval():
@@ -46,10 +47,11 @@ def testIdentifyCompaniesInNews():
         print()
 
 def testIdentifyandVerifyCompaniesInNews():
-    news = News.getArticles('Gaming', '','en','2022-04-13','2022-03-13',50)
+    news = News.getArticles('Coffee', '','en','2022-04-13','2022-03-13',50)
     found_companies = Identificator.identify_companies_in_news(news)
+    
     for k,v in found_companies.items():
-        print(v['name'] + ': ' + v['description'])
+        print(v['name'] + ': ', v['score'])
         print('Found in')
         for url in v['urls']:
             print(url)
