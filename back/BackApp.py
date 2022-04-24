@@ -50,7 +50,7 @@ def testIdentifyCompaniesInNews():
         print()
 
 def testIdentifyandVerifyCompaniesInNews():
-    news = News.getArticles('Cars', '','en','2022-04-13','2022-03-13',10)
+    news = News.getArticles(' Latin America', '','en','2022-04-13','2022-02-13',20)
     Clasificator.addNewsClass(news)
     found_companies = Identificator.identify_companies_in_news(news)
     
@@ -58,18 +58,19 @@ def testIdentifyandVerifyCompaniesInNews():
         print("Company name: "+v['name'] + ' ', v['score'])
         print("\nPosible companies related: ")
         posible_companies = Companies.getCompanyInfo(v['name'])
-        Clasificator.addCompaniesClass(posible_companies)
-        for comp in posible_companies['entities']:
-            print(comp['identifier']['value'] + " ---- " + comp['short_description'])
-            for c in comp['class']:
-                print("tag: "+c['label']+" ",c['score'])
+        if(len(posible_companies)>0):
+            Clasificator.addCompaniesClass(posible_companies)
+            for comp in posible_companies['entities']:
+                print(comp['identifier']['value'] + " ---- " + comp['short_description'])
+                for c in comp['class']:
+                    print("tag: "+c['label']+" ",c['score'])
 
-        print('\n Found in next news: ')
-        for newsid in v['newsid']:
-            print(news[newsid]['url'])
-            for c in news[newsid]['class']:
-                print(c['label']+" ",c['score'])
-        print()
+            print('\n Found in next news: ')
+            for newsid in v['newsid']:
+                print(news[newsid]['url'])
+                for c in news[newsid]['class']:
+                    print(c['label']+" ",c['score'])
+            print()
 
 def testNewsClasification():
     news = News.getArticles('Coffee', '','en','2022-04-13','2022-03-13',10)

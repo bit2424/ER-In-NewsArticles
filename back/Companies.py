@@ -23,7 +23,10 @@ def getCompanyInfo(company):
   
   data = {}
 
-  if(response != None):
+  if (
+    response.status_code != 204 and
+    response.headers["content-type"].strip().startswith("application/json")
+  ):
     data = json.loads(response.text)
 
   #print(data.keys())

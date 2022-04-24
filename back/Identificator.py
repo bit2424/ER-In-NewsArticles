@@ -27,7 +27,6 @@ def identify_companies_in_news(news):
             if curr_company not in found_companies:
               #Here we could check if you can find the company
               found_companies[curr_company] = {'name': curr_company,'score': entity['score'],'description': "", 'newsid': [nid]}
-              nid+=1
             else:
               if nid not in found_companies[curr_company]['newsid']:
                 found_companies[curr_company]['newsid'].append(nid)
@@ -43,23 +42,26 @@ def identify_companies_in_news(news):
             curr_company += " "+entity['word']
         
         #print(entity['entity']+" "+entity['word'])
-  last_entity = ner_results[len(ner_results)-1]
-  nid=-1
-  if curr_company not in found_companies:
-    found_companies[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'newsid': [nid]}
-  else:
-    if nid not in found_companies[curr_company]['newsid']:
-      found_companies[curr_company]['newsid'].append(nid)
-    found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , last_entity['score'])
+    nid+=1
   
-  not_fitted_elements = []
-  for k,v in found_companies.items():
-      if(v['score']<0.75):
-        not_fitted_elements.append(k)
-        print(v['name'] + ': ', v['score'])
+  nid-=1
+  if(nid != 0):
+    last_entity = ner_results[len(ner_results)-1]
+    if curr_company not in found_companies:
+      found_companies[curr_company] = {'name': curr_company, 'score': last_entity['score'], 'newsid': [nid]}
+    else:
+      if nid not in found_companies[curr_company]['newsid']:
+        found_companies[curr_company]['newsid'].append(nid)
+      found_companies[curr_company]['score'] = max(found_companies[curr_company]['score'] , last_entity['score'])
+    
+    not_fitted_elements = []
+    for k,v in found_companies.items():
+        if(v['score']<0.75):
+          not_fitted_elements.append(k)
+          print(v['name'] + ': ', v['score'])
 
-  for k in not_fitted_elements:
-    del found_companies[k]
+    for k in not_fitted_elements:
+      del found_companies[k]
 
   return found_companies
 
