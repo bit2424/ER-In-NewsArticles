@@ -10,6 +10,9 @@ def main():
     #testCompanyIdentification("NEVADA Iowa AP In 2008, this overwhelmingly white state was Barack Obamas unlikely launching pad to become the nations first Black president. Fourteen years later, Iowans arent showing a similar embrace for the woman running to become its first Black governor.")
     #testNewsClasification()
 
+def getCompanieOpts(query):
+    results = {}
+    return results
 
 def testNewsArticlesRetrieval():
     articles = News.getArticles('Politics', '','en','2022-04-13','2022-03-13',15)
@@ -50,18 +53,28 @@ def testIdentifyCompaniesInNews():
         print()
 
 def testIdentifyandVerifyCompaniesInNews():
-    news = News.getArticles(' Latin America', '','en','2022-04-13','2022-02-13',20)
+    news = News.getArticles('Latin America', '','en','2022-04-19','2022-03-13',20)
     Clasificator.addNewsClass(news)
     found_companies = Identificator.identify_companies_in_news(news)
     
+    result = {}
+    result['companies'] = {}
+
     for k,v in found_companies.items():
         print("Company name: "+v['name'] + ' ', v['score'])
         print("\nPosible companies related: ")
         posible_companies = Companies.getCompanyInfo(v['name'])
+
+        result['companies'][v['name']] = {}
+        result['companies'][v['name']]['confidence'] =  v['score']
+
         if(len(posible_companies)>0):
             Clasificator.addCompaniesClass(posible_companies)
             for comp in posible_companies['entities']:
+                #Create and if statement only for the bussness news
                 print(comp['identifier']['value'] + " ---- " + comp['short_description'])
+                #result[]                
+
                 for c in comp['class']:
                     print("tag: "+c['label']+" ",c['score'])
 

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} News company app {% endblock %}</h1>
+    <h1>{% block title %} {{Title}} {% endblock %}</h1>
     
-    <form action="" method="post">
+    <form action="http://localhost:5000/table" method="post">
         <label for="name">Topic: </label><br>
         <input type="text" id="topic" name="topic" /><br>
         <label for="name">Industry: </label><br>
@@ -11,5 +11,7 @@
         <input type="submit" id="send-signup" name="signup" value="Evaluate" />
         <input type="reset" value="Reset">
     </form>
+
+    <a href="{}"
 
 {% endblock %}

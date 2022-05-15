@@ -20,6 +20,8 @@ def identify_companies_in_news(news):
     #proper_names = preprocess_article(content)
     ner_results = nlp(content)
     curr_company = ''
+
+    
     for entity in ner_results:
       if 'ORG' in entity['entity']:
         if 'B' in entity['entity'] and "##" not in entity['word']:
@@ -65,6 +67,7 @@ def identify_companies_in_news(news):
 
   return found_companies
 
+#Identifies the posible organizations that are find in a particular text
 def identify_companies_in_text(n):
   found_companies = {}
   #print(n)
