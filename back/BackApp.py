@@ -58,25 +58,36 @@ def testIdentifyandVerifyCompaniesInNews():
     found_companies = Identificator.identify_companies_in_news(news)
     
     result = {}
-    result['companies'] = {}
 
     for k,v in found_companies.items():
-        print("Company name: "+v['name'] + ' ', v['score'])
-        print("\nPosible companies related: ")
+        
         posible_companies = Companies.getCompanyInfo(v['name'])
 
-        result['companies'][v['name']] = {}
-        result['companies'][v['name']]['confidence'] =  v['score']
 
         if(len(posible_companies)>0):
+            print("Company name: "+v['name'] + ' ', v['score'])
+            print("\nPosible companies related: ")
+            result[v['name']] = {}
+            result[v['name']]['confidence'] =  v['score']
+            result[v['name']]['compainies_info'] = {}
             Clasificator.addCompaniesClass(posible_companies)
+
             for comp in posible_companies['entities']:
                 #Create and if statement only for the bussness news
-                print(comp['identifier']['value'] + " ---- " + comp['short_description'])
-                #result[]                
+                
+                isBusiness = False
 
                 for c in comp['class']:
-                    print("tag: "+c['label']+" ",c['score'])
+                    if(c['label']=='Business'):
+                        print("tag: "+c['label']+" ",c['score'])
+                        isBusiness = True
+                
+                if(isBusiness):
+                    print(comp['identifier']['value'] + " ---- " + comp['short_description'])
+                    result[v['name']]['compainies_info'][comp['identifier']['value']] = comp['short_description']
+                #result[]                
+    return result
+                
 
             print('\n Found in next news: ')
             for newsid in v['newsid']:
@@ -84,6 +95,7 @@ def testIdentifyandVerifyCompaniesInNews():
                 for c in news[newsid]['class']:
                     print(c['label']+" ",c['score'])
             print()
+            
 
 def testNewsClasification():
     news = News.getArticles('Coffee', '','en','2022-04-13','2022-03-13',10)
