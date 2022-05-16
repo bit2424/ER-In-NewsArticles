@@ -1,9 +1,9 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import pipeline
 
-tokenizer = AutoTokenizer.from_pretrained("mrm8488/bert-mini-finetuned-age_news-classification")
+tokenizer = AutoTokenizer.from_pretrained("mrm8488/distilroberta-finetuned-age_news-classification")
 
-model = AutoModelForSequenceClassification.from_pretrained("mrm8488/bert-mini-finetuned-age_news-classification")
+model = AutoModelForSequenceClassification.from_pretrained("mrm8488/distilroberta-finetuned-age_news-classification")
 
 nlp = pipeline("text-classification", model = model, tokenizer=tokenizer)
 

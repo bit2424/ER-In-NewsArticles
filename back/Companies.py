@@ -1,5 +1,11 @@
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 import requests
 import json
+
+tokenizer = AutoTokenizer.from_pretrained("sampathkethineedi/industry-classification")  
+model = AutoModelForSequenceClassification.from_pretrained("sampathkethineedi/industry-classification")
+classify_company = pipeline('sentiment-analysis', model=model, tokenizer=tokenizer)
+
 
 #Search for a particular companie
 #A data['entities'] has keys ['facet_ids', 'identifier', 'short_description']
@@ -29,9 +35,11 @@ def getCompanyInfo(company):
   ):
     data = json.loads(response.text)
 
-  #print(data.keys())
-  
   return data
+
+def getCompanyIndustry(short_description):
+  industry = classify_company(short_description)
+  return industry[0]['label']
 
 
 #Search for a group of companies from Europe, I dont know yet how to ge companies from other places
