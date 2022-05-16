@@ -22,7 +22,23 @@ To execute the primary functionality of the app go to BackApp and play with the 
 
     py back/BackApp.py
 
-Possible Company Categories:
+Expected json request for backend:
+{
+    "query":"Coffee",
+    "from-date":"2022-03-13",
+    "to-date":"2022-05-15",
+    "accepted-industries":[]
+}
+
+or filtering with industries:
+{
+    "query":"Coffee",
+    "from-date":"2022-03-13",
+    "to-date":"2022-05-15",
+    "accepted-industries":["Restaurants"]
+}
+
+Possible Company Categories (casing is important):
 * Advertising
 * Aerospace & Defense
 * Apparel Retail

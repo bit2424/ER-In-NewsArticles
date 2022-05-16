@@ -26,7 +26,7 @@ def identify_companies_in_news(news):
     for c in companies:
       if c not in found_companies:
         found_companies[c] = list()
-      newsinfo = {'title': n['title'], 'description': n['description'], 'url': n['url']}
+      newsinfo = {'title': n['title'], 'url': n['url']}
       found_companies[c].append(newsinfo)
 
   return found_companies
