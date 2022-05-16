@@ -53,48 +53,55 @@ def testIdentifyCompaniesInNews():
         print()
 
 def testIdentifyandVerifyCompaniesInNews():
-    news = News.getArticles('Latin America', '','en','2022-04-19','2022-03-13',20)
+    news = News.getArticles('video games', '','en','2022-04-19','2022-03-13',20)
     Clasificator.addNewsClass(news)
     found_companies = Identificator.identify_companies_in_news(news)
     
     result = {}
+    #threshold = 0.7
 
-    for k,v in found_companies.items():
-        
-        posible_companies = Companies.getCompanyInfo(v['name'])
-
-
-        if(len(posible_companies)>0):
-            print("Company name: "+v['name'] + ' ', v['score'])
-            print("\nPosible companies related: ")
-            result[v['name']] = {}
-            result[v['name']]['confidence'] =  v['score']
-            result[v['name']]['compainies_info'] = {}
-            Clasificator.addCompaniesClass(posible_companies)
-
-            for comp in posible_companies['entities']:
-                #Create and if statement only for the bussness news
-                
-                isBusiness = False
-
-                for c in comp['class']:
-                    if(c['label']=='Business'):
-                        print("tag: "+c['label']+" ",c['score'])
-                        isBusiness = True
-                
-                if(isBusiness):
-                    print(comp['identifier']['value'] + " ---- " + comp['short_description'])
-                    result[v['name']]['compainies_info'][comp['identifier']['value']] = comp['short_description']
-                #result[]                
-    return result
-                
-
-            print('\n Found in next news: ')
-            for newsid in v['newsid']:
-                print(news[newsid]['url'])
-                for c in news[newsid]['class']:
+    for k,v in found_companies.items():    
+        #We have to check the companies are found in news relaeted to business
+        isBusiness = False
+        relevant_news = []
+        print('\n Found in next news: ')
+        for newsid in v['newsid']:
+            for c in news[newsid]['class']:
+                if(c['label'] == 'Business'):
+                    print(news[newsid]['url'])
                     print(c['label']+" ",c['score'])
-            print()
+                    relevant_news.append(news[newsid])
+                    isBusiness = True
+        print()
+
+    if(isBusiness):
+        
+        for k,v in found_companies.items():
+            
+            posible_companies = Companies.getCompanyInfo(v['name'])
+
+
+            if(len(posible_companies)>0):
+                print("Company name: "+v['name'] + ' ', v['score'])
+                print("\nPosible companies related: ")
+                result[v['name']] = {}
+                result[v['name']]['confidence'] =  v['score']
+                result[v['name']]['news'] = relevant_news
+                result[v['name']]['compainies_info'] = {}
+                Clasificator.addCompaniesClass(posible_companies)
+
+                for comp in posible_companies['entities']:
+                    #We have to check the companies being selected are related to business topic
+                    for c in comp['class']:
+                        if(c['label']=='Business'):
+                            print("tag: "+c['label']+" ",c['score'])
+                            print(comp['identifier']['value'] + " ---- " + comp['short_description'])
+                            result[v['name']]['compainies_info'][comp['identifier']['value']] = {}
+                            result[v['name']]['compainies_info'][comp['identifier']['value']]['short_description'] = comp['short_description']
+                            result[v['name']]['compainies_info'][comp['identifier']['value']]['name'] = comp['identifier']['value']
+                            result[v['name']]['compainies_info'][comp['identifier']['value']]['score'] = c['score']
+
+    return result
             
 
 def testNewsClasification():

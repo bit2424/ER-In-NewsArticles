@@ -1,5 +1,6 @@
 flask
 flask-bootstrap
+flask-wtf
 newsapi-python
 transformers
 torch
