@@ -150,13 +150,14 @@ def initialize():
     URL = "http://localhost:8080/find-companies"
     data = {'query':'food',
                 'from-date':'2022-05-15',
-                'to-date':'2022-04-13',
+                'to-date':'2022-04-20',
                 'accepted-industries':selected_industries
     }
     print()
     r = requests.get(url = URL, json=data)
     data = r.json()
     context['elems'] = data
+    print(data[0]['candidates'])
     #context['queryResult'] = back.testIdentifyandVerifyCompaniesInNews()
 
 if __name__ == "__main__":
