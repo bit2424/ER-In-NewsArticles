@@ -21,7 +21,8 @@ def findCompaniesInNews():
     news = News.getArticles(query, '','en',to_date,from_date,20)
     # We only care about Sci/Tech or Business news
     Clasificator.addNewsClass(news)
-    #news = filter(lambda x: x['class'] == 'Sci/Tech' or x['class'] == 'Business', news)
+    accepted_news_labels = {'Business','Sci/Tech'}
+    news = [n for n in news if n['class'][0]['label'] in accepted_news_labels]
 
     found_companies = Identificator.identify_companies_in_news(news)
 
