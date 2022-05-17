@@ -47,7 +47,7 @@ def testIdentifyCompaniesInNews():
     news = News.getArticles('Gaming', '','en','2022-04-13','2022-03-13',50)
     found_companies = Identificator.identify_companies_in_news(news)
     for k,v in found_companies.items():
-        print(company + ': ' + v['score'])
+        print(k + ': ' + v['score'])
         print('Found in')
         for newsid in v['newsid']:
             print(newsid)

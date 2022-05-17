@@ -12,6 +12,7 @@ MAX_RELATED_COMPANIES = 1
 def findCompaniesInNews():
 
     request_data = request.get_json()
+    print(request_data)
     query = request_data['query']
     from_date = request_data['from-date']
     to_date = request_data['to-date']
