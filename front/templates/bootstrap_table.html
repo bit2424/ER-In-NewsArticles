@@ -2,11 +2,19 @@
 
 {% block content %}
     <h1>{% block title %} {{Title}} {% endblock %}</h1>
-    
-    {% for elem in elems %}
-        <tr>
-                <li>{{ elem }}</li>
-        <tr>
-    {% endfor %} 
+
+    <div class="u-repeater u-repeater-1">
+        {% for elem in elems %}
+            <div class="cell">
+                <div class="u-container-layout u-similar-container u-container-layout-1"><span class="u-file-icon u-icon u-icon-circle u-palette-1-base u-text-white u-icon-1"><img src="images/5.png" alt=""></span>
+                    <h5 class="u-custom-font u-font-georgia u-text u-text-3"> Word metioned in the news: {{ elem.name }} </h5>
+                    {% for comps in elem.candidates %}
+                        <p class="u-text u-text-4">{{comps.name}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        
+      </div>
 
 {% endblock %}

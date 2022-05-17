@@ -93,39 +93,38 @@ class QueryForm(FlaskForm):
                                             Length(min=2,max=200)])
 
     #Parece que este es el formato correcto
-    date_from = DateField('Select the start date for the search')
+    date_from = DateField('Select the start date for the search', validators=[InputRequired()])
 
-    date_to = DateField('Select the end date for the search')
+    date_to = DateField('Select the end date for the search',validators=[InputRequired()])
     
-    industries = SelectMultipleField('Select the categories of the companies you want to choose',choices = company_categories, default = ['1', '64'])
+    industries = SelectMultipleField('Select the categories of the companies you want to choose',choices = company_categories, default = ['1', '63'],)
 
     submit = SubmitField()
 
 @app.route("/table", methods=["GET", "POST"])
 def generateTables():
-    if request.method == 'POST':
-        form_out = request.form
-        #print(form_out)
-        selected_industries = []
-        for idx in form_out.getlist('industries'):
-            selected_industries.append(company_categories[int(idx)][1] )
-        #print(selected_industries)
-        date_from = form_out['date_from']
-        date_to = form_out['date_to']
-        query = form_out['query']
-        URL = "http://localhost:8080/find-companies"
-        data = {'query':query,
-                   'from-date':date_from,
-                   'to-date':date_to,
-                   'accepted-industries':selected_industries
-        }
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-
-        r = requests.get(url = URL, json=data)
-        data = r.json()
-        print(data)
+    # if request.method == 'POST':
+    #     form_out = request.form
+    #     #print(form_out)
+    #     selected_industries = []
+    #     for idx in form_out.getlist('industries'):
+    #         selected_industries.append(company_categories[int(idx)-1][1] )
+    #     #print(selected_industries)
+    #     date_from = form_out['date_from']
+    #     date_to = form_out['date_to']
+    #     query = form_out['query']
+    #     URL = "http://localhost:8080/find-companies"
+    #     data = {'query':query,
+    #                'from-date':date_from,
+    #                'to-date':date_to,
+    #                'accepted-industries':selected_industries
+    #     }
+    #     print()
+    #     r = requests.get(url = URL, json=data)
+    #     data = r.json()
+    #     context['elems'] = data
     
-    context['Title'] = "RESULTADOS DE LA BUSQUEDA"
+    context['Title'] = "Results for the query"
     return render_template("bootstrap_table.html",**context)
 
 @app.route('/', methods=["GET", "POST"])
@@ -133,17 +132,31 @@ def index():
     #companiesOpt = back.getCompanieOpts()
     form = QueryForm()
     context['form'] = form
-    context['Title'] = "REALIZA UNA BUSQUEDA"
+    context['Title'] = "Make a Query"
 
     if form.validate_on_submit():
-        flash('La busqueda se esta realizando')
+        flash('The query is being preformed')
         return redirect('bootstrap_table.html',**context)
 
     return render_template('index.html',**context)
 
 @app.before_first_request
 def initialize():
-    context['elems'] = ["Esto", "es", "una", "prueba"]
+    #context['elems'] = ["Esto", "es", "una", "prueba"]
+    selected_industries = []
+    for idx in company_categories:
+        selected_industries.append(idx[1] )
+    #print(selected_industries)
+    URL = "http://localhost:8080/find-companies"
+    data = {'query':'food',
+                'from-date':'2022-05-15',
+                'to-date':'2022-04-13',
+                'accepted-industries':selected_industries
+    }
+    print()
+    r = requests.get(url = URL, json=data)
+    data = r.json()
+    context['elems'] = data
     #context['queryResult'] = back.testIdentifyandVerifyCompaniesInNews()
 
 if __name__ == "__main__":
