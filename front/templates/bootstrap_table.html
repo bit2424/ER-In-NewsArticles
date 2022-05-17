@@ -1,69 +1,37 @@
 {% extends 'base.html' %}
 
-{% block imports %}
-    
-    
-{% endblock %}
 
 {% block content %}
     <h1>{% block title %} {{Title}} {% endblock %}</h1>
 
-    <div class="u-repeater u-repeater-1">
+    
         {% for elem in elems %}
-            <div class="cell">
-                <div class="u-container-layout u-similar-container u-container-layout-1"><span class="u-file-icon u-icon u-icon-circle u-palette-1-base u-text-white u-icon-1"><img src="/front/templates/images/5.png" alt=""></span>
-                    <h5 class="u-custom-font u-font-georgia u-text u-text-3"> Word metioned: {{ elem.name }} </h5>
-                    <h5 class="u-custom-font u-font-georgia u-text u-text-3"> Found in following news: </h5>
-                    
+            
+            <div style="border-radius: 25px;padding-bottom:5px;padding-top: 5px ;background-color:#92B4EC">
+                <h4> Word metioned:</h4>
+                <p style="padding-left:20px;background-color:#FFE69A">{{ elem.name }}</p>
+                </th><h4> Found in following news: </h4>
+                
+                <p style="padding-left:20px;background-color:#FFE69A">
                     {% for news in elem.news %}
-                        <li class="u-text u-text-4">{{news.title}}</li>
-                        <h5 class="u-custom-font u-font-georgia u-text u-text-3"> {{news.url}} </h5>
+                        {{news.title}}:
+                        <a href="{{news.url}}"> {{news.url}} </a>
                     {% endfor %}
-                    
-                    <h5 class="u-custom-font u-font-georgia u-text u-text-3"> Companies asociated with the word</h5>
+                </p>
+                
+                
+                <h4> Companies asociated with the word:</h4>
 
-                    {% for comps in elem.candidates %}
-                        <h5 class="u-custom-font u-font-georgia u-text u-text-3"> Companie name: </h5>
-                        <p class="u-text u-text-4">{{comps.name}}</p>
-                        
-                        <h5 class="u-custom-font u-font-georgia u-text u-text-3"> Description: </h5>
-                        <p class="u-text u-text-4">{{comps.description}}</p>
-                        
-                        <h5 class="u-custom-font u-font-georgia u-text u-text-3">Industries related:</h5>
-                        <p class="u-text u-text-4">{{comps.industry}}</p>
-                    {% endfor %}
-                </div>
+                {% for comps in elem.candidates %}
+                    <div style="background-color:#FFE69A">
+                        <p style="padding-left:20px;"> Companie name: {{comps.name}}</p>
+                        <p style="padding-left:20px;"> Description: {{comps.description}}</p>
+                        <p style="padding-left:20px;"> Industries related: {{comps.industry}} </p>
+                    </div>
+                {% endfor %}
             </div>
+            <div style="padding-bottom:20px;padding-top: 20px;"></div>
         {% endfor %}
-      </div>
-
-      <div class="u-expanded-width u-list u-list-1">
-        <div class="u-repeater u-repeater-1">
-          <div class="u-align-left u-container-style u-list-item u-repeater-item u-white u-list-item-1">
-            <div class="u-container-layout u-similar-container u-container-layout-1"><span class="u-file-icon u-icon u-icon-circle u-palette-1-base u-text-white u-icon-1"><img src="images/5.png" alt=""></span>
-              <h5 class="u-custom-font u-font-georgia u-text u-text-3"> Code Editor</h5>
-              <p class="u-text u-text-4">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-            </div>
-          </div>
-          <div class="u-align-left u-container-style u-list-item u-repeater-item u-white u-list-item-2">
-            <div class="u-container-layout u-similar-container u-container-layout-2"><span class="u-file-icon u-icon u-icon-circle u-palette-1-base u-text-white u-icon-2"><img src="images/5.png" alt=""></span>
-              <h5 class="u-custom-font u-font-georgia u-text u-text-5"> Media Storage</h5>
-              <p class="u-text u-text-6">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-            </div>
-          </div>
-          <div class="u-align-left u-container-style u-list-item u-repeater-item u-white u-list-item-3">
-            <div class="u-container-layout u-similar-container u-container-layout-3"><span class="u-file-icon u-icon u-icon-circle u-palette-1-base u-text-white u-icon-3"><img src="images/5.png" alt=""></span>
-              <h5 class="u-custom-font u-font-georgia u-text u-text-7"> SSL Certificate</h5>
-              <p class="u-text u-text-8">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-            </div>
-          </div>
-          <div class="u-align-left u-container-style u-list-item u-repeater-item u-white u-list-item-4">
-            <div class="u-container-layout u-similar-container u-container-layout-4"><span class="u-file-icon u-icon u-icon-circle u-palette-1-base u-text-white u-icon-4"><img src="images/5.png" alt=""></span>
-              <h5 class="u-custom-font u-font-georgia u-text u-text-9"> Personal Domain</h5>
-              <p class="u-text u-text-10">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    
 
 {% endblock %}

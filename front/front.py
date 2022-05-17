@@ -103,26 +103,26 @@ class QueryForm(FlaskForm):
 
 @app.route("/table", methods=["GET", "POST"])
 def generateTables():
-    # if request.method == 'POST':
-    #     form_out = request.form
-    #     #print(form_out)
-    #     selected_industries = []
-    #     for idx in form_out.getlist('industries'):
-    #         selected_industries.append(company_categories[int(idx)-1][1] )
-    #     #print(selected_industries)
-    #     date_from = form_out['date_from']
-    #     date_to = form_out['date_to']
-    #     query = form_out['query']
-    #     URL = "http://localhost:8080/find-companies"
-    #     data = {'query':query,
-    #                'from-date':date_from,
-    #                'to-date':date_to,
-    #                'accepted-industries':selected_industries
-    #     }
-    #     print()
-    #     r = requests.get(url = URL, json=data)
-    #     data = r.json()
-    #     context['elems'] = data
+    if request.method == 'POST':
+        form_out = request.form
+        #print(form_out)
+        selected_industries = []
+        for idx in form_out.getlist('industries'):
+            selected_industries.append(company_categories[int(idx)-1][1] )
+        #print(selected_industries)
+        date_from = form_out['date_from']
+        date_to = form_out['date_to']
+        query = form_out['query']
+        URL = "http://localhost:8080/find-companies"
+        data = {'query':query,
+                   'from-date':date_from,
+                   'to-date':date_to,
+                   'accepted-industries':selected_industries
+        }
+        print()
+        r = requests.get(url = URL, json=data)
+        data = r.json()
+        context['elems'] = data
     
     context['Title'] = "Results for the query"
     return render_template("bootstrap_table.html",**context)
@@ -142,22 +142,22 @@ def index():
 
 @app.before_first_request
 def initialize():
-    #context['elems'] = ["Esto", "es", "una", "prueba"]
-    selected_industries = []
-    for idx in company_categories:
-        selected_industries.append(idx[1] )
-    #print(selected_industries)
-    URL = "http://localhost:8080/find-companies"
-    data = {'query':'food',
-                'from-date':'2022-05-15',
-                'to-date':'2022-04-20',
-                'accepted-industries':selected_industries
-    }
-    print()
-    r = requests.get(url = URL, json=data)
-    data = r.json()
-    context['elems'] = data
-    print(data[0]['candidates'])
+    context['elems'] = ["Esto", "es", "una", "prueba"]
+    # selected_industries = []
+    # for idx in company_categories:
+    #     selected_industries.append(idx[1] )
+    # print(selected_industries)
+    # URL = "http://localhost:8080/find-companies"
+    # data = {'query':'food',
+    #             'from-date':'2022-05-15',
+    #             'to-date':'2022-04-20',
+    #             'accepted-industries':selected_industries
+    # }
+    # print()
+    # r = requests.get(url = URL, json=data)
+    # data = r.json()
+    # context['elems'] = data
+    #print(data[0]['candidates'])
     #context['queryResult'] = back.testIdentifyandVerifyCompaniesInNews()
 
 if __name__ == "__main__":
