@@ -40,7 +40,9 @@ def findCompaniesInNews():
                 ind = Companies.getCompanyIndustry(desc)
                 print(comp['identifier']['value'] + " ---- " + desc + " ---- " + ind)
                 if len(accepted_industries)==0 or ind in accepted_industries:
+                    social_networks = Companies.getCompanySocialNetworks(comp['identifier']['uuid'])
                     curr_candidate = {"name": comp['identifier']['value'], "description": desc, "industry": ind}
+                    curr_candidate.update(social_networks)
                     candidates.append(curr_candidate)
                     cnt -= 1
 

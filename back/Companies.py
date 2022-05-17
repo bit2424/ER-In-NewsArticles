@@ -41,6 +41,36 @@ def getCompanyIndustry(short_description):
   industry = classify_company(short_description)
   return industry[0]['label']
 
+def getCompanySocialNetworks(uuid):
+  url = "https://crunchbase-crunchbase-v1.p.rapidapi.com/entities/organizations/"+uuid
+
+  querystring = {"field_ids":"facebook,twitter,linkedin,website_url"}
+
+  headers = {
+    "X-RapidAPI-Host": "crunchbase-crunchbase-v1.p.rapidapi.com",
+    "X-RapidAPI-Key": "2fcba07a10mshc5666fa4db542d2p15000bjsn7e75013d8c61"
+  }
+
+  response = requests.request("GET", url, headers=headers, params=querystring)
+  data = json.loads(response.text)
+  data = data['properties']
+  facebook = data.get('facebook')
+  if facebook is not None:
+    facebook = facebook['value']
+  linkedin = data.get('linkedin')
+  if linkedin is not None:
+    linkedin = linkedin['value']
+  twitter = data.get('twitter')
+  if twitter is not None:
+    twitter = twitter['value']
+  website = data.get('website_url')
+  return {
+    'facebook': facebook,
+    'linkedin': linkedin,
+    'twitter': twitter,
+    'website': website
+  }
+
 
 #Search for a group of companies from Europe, I dont know yet how to ge companies from other places
 #
