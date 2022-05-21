@@ -12,7 +12,6 @@ MAX_RELATED_COMPANIES = 3
 def findCompaniesInNews():
 
     request_data = request.get_json()
-    print(request_data  )
     query = request_data['query']
     from_date = request_data['from-date']
     to_date = request_data['to-date']
@@ -21,15 +20,14 @@ def findCompaniesInNews():
     news = News.getArticles(query, '','en',to_date,from_date,20)
     # We only care about Sci/Tech or Business news
     Clasificator.addNewsClass(news)
-    #news = filter(lambda x: x['class'] == 'Sci/Tech' or x['class'] == 'Business', news)
+    accepted_news_labels = {'Business','Sci/Tech'}
+    news = [n for n in news if n['class'][0]['label'] in accepted_news_labels]
 
     found_companies = Identificator.identify_companies_in_news(news)
 
     result = []
     for company,news in found_companies.items():
         current = {"name": company, "news": news}
-        print("Company name: "+company)
-        print("\nPosible companies related: ")
         posible_companies = Companies.getCompanyInfo(company)
         candidates = []
         if(len(posible_companies)>0):
@@ -41,15 +39,12 @@ def findCompaniesInNews():
                 ind = Companies.getCompanyIndustry(desc)
                 print(comp['identifier']['value'] + " ---- " + desc + " ---- " + ind)
                 if len(accepted_industries)==0 or ind in accepted_industries:
+                    social_networks = Companies.getCompanySocialNetworks(comp['identifier']['uuid'])
                     curr_candidate = {"name": comp['identifier']['value'], "description": desc, "industry": ind}
+                    curr_candidate.update(social_networks)
                     candidates.append(curr_candidate)
                     cnt -= 1
 
-
-            print('\n Found in next news: ')
-            for n in news:
-                print(n['title']+" - "+n['url'])
-            print()
         current['candidates'] = candidates
         result.append(current)
     return json.dumps(result)

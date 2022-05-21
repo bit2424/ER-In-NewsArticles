@@ -1,37 +1,47 @@
-{% extends 'base.html' %}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}" media="screen">
+</head>
 
-{% block content %}
-    <h1>{% block title %} {{Title}} {% endblock %}</h1>
-
-    
-        {% for elem in elems %}
-            
-            <div style="border-radius: 25px;padding-bottom:5px;padding-top: 5px ;background-color:#92B4EC">
-                <h4> Word metioned:</h4>
-                <p style="padding-left:20px;background-color:#FFE69A">{{ elem.name }}</p>
-                </th><h4> Found in following news: </h4>
-                
-                <p style="padding-left:20px;background-color:#FFE69A">
-                    {% for news in elem.news %}
-                        {{news.title}}:
-                        <a href="{{news.url}}"> {{news.url}} </a>
-                    {% endfor %}
-                </p>
-                
-                
-                <h4> Companies asociated with the word:</h4>
-
-                {% for comps in elem.candidates %}
-                    <div style="background-color:#FFE69A">
-                        <p style="padding-left:20px;"> Companie name: {{comps.name}}</p>
-                        <p style="padding-left:20px;"> Description: {{comps.description}}</p>
-                        <p style="padding-left:20px;"> Industries related: {{comps.industry}} </p>
-                    </div>
-                {% endfor %}
+<body>
+    {% block content %}
+        <h1>{% block title %} {{Title}} {% endblock %}</h1>
+            <div class="results">
+                {% for elem in elems %}
+                <div class="result">
+                    <h4> <b class="company_item">Word metioned:</b></h4>
+                    <p>{{ elem.name }}</p>
+                    </th><h4> Found in following news: </h4>
+                    <ul>
+                        {% for news in elem.news %}
+                            <li>
+                                {{news.title}}:
+                                <a href="{{news.url}}"> {{news.url}} </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h4> Companies asociated with the word:</h4>
+                    <ul>
+                        {% for comps in elem.candidates %}
+                            <li>
+                                <p> <b class="company_item">Companie name: </b>{{comps.name}}</p>
+                                <p> <b class="company_item">Description: </b> {{comps.description}}</p>
+                                <p> <b class="company_item">Industries related: </b> {{comps.industry}} </p>
+                                <p> <b class="company_item">Social media and contacts: </b></p>
+                                {% for sm_item in elem.social_media %}
+                                {% endfor %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
             </div>
-            <div style="padding-bottom:20px;padding-top: 20px;"></div>
-        {% endfor %}
-    
-
-{% endblock %}
+    {% endblock %}
+</body>
+</html>
