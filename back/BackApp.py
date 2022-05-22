@@ -6,7 +6,7 @@ import json
 from flask import Flask, request
 
 app = Flask(__name__)
-MAX_RELATED_COMPANIES = 3
+MAX_RELATED_COMPANIES = 2
 
 @app.route('/find-companies')
 def findCompaniesInNews():
@@ -37,7 +37,6 @@ def findCompaniesInNews():
                     break
                 desc = comp['short_description']
                 ind = Companies.getCompanyIndustry(desc)
-                print(comp['identifier']['value'] + " ---- " + desc + " ---- " + ind)
                 if len(accepted_industries)==0 or ind in accepted_industries:
                     social_networks = Companies.getCompanySocialNetworks(comp['identifier']['uuid'])
                     curr_candidate = {"name": comp['identifier']['value'], "description": desc, "industry": ind}

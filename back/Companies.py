@@ -52,18 +52,26 @@ def getCompanySocialNetworks(uuid):
   }
 
   response = requests.request("GET", url, headers=headers, params=querystring)
-  data = json.loads(response.text)
-  data = data['properties']
-  facebook = data.get('facebook')
-  if facebook is not None:
-    facebook = facebook['value']
-  linkedin = data.get('linkedin')
-  if linkedin is not None:
-    linkedin = linkedin['value']
-  twitter = data.get('twitter')
-  if twitter is not None:
-    twitter = twitter['value']
-  website = data.get('website_url')
+  
+  facebook = 'Not found'
+  linkedin = 'Not found'
+  twitter = 'Not found'
+  website = 'Not found'
+
+  if(response.text is not None and response.status_code == 200):
+    print(response)
+    data = json.loads(response.text)
+    data = data['properties']
+    facebook = data.get('facebook')
+    if facebook is not None:
+      facebook = facebook['value']
+    linkedin = data.get('linkedin')
+    if linkedin is not None:
+      linkedin = linkedin['value']
+    twitter = data.get('twitter')
+    if twitter is not None:
+      twitter = twitter['value']
+    website = data.get('website_url')
   return {
     'facebook': facebook,
     'linkedin': linkedin,

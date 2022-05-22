@@ -12,6 +12,7 @@ body{
   flex-direction: column;
   gap: 1em;
 }
+
 .result{
   background-color: #ffffff;
   padding: 1em;
@@ -19,9 +20,22 @@ body{
   box-shadow: rgba(57, 61, 65, 0.3) 0px 8px 24px;
 }
 
+
+.result_title{
+  font-size: 23px;
+}
+
 .company_item{
   font-weight: bold;
   font-size: 15px;
+}
+
+.company_result{
+  background-color: #ffffff;
+  padding: 1em;
+  border-radius: 16px;
+  margin: 10px auto 0 0;
+  box-shadow: rgba(57, 61, 65, 0.1) 0px 8px 24px;
 }
 
 /* .u-section-1 {

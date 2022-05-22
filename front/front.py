@@ -143,16 +143,17 @@ def initialize():
     selected_industries = []
     for idx in company_categories:
         selected_industries.append(idx[1] )
-    print(selected_industries)
+    #print(selected_industries)
     URL = "http://localhost:8080/find-companies"
     data = {'query':'food',
                 'from-date':'2022-05-15',
                 'to-date':'2022-04-26',
                 'accepted-industries':selected_industries
     }
-    print()
+    #print()
     r = requests.get(url = URL, json=data)
     data = r.json()
+    #print(data,"\n")
     context['elems'] = data
     #print(data[0]['candidates'])
     #context['queryResult'] = back.testIdentifyandVerifyCompaniesInNews()
