@@ -38,6 +38,21 @@ body{
   box-shadow: rgba(57, 61, 65, 0.1) 0px 8px 24px;
 }
 
+.form_box{
+  background-color: #ffffff;
+  padding: 1em;
+  border-radius: 16px;
+  box-shadow: rgba(57, 61, 65, 0.3) 0px 8px 24px;
+}
+
+.form_item{
+  font-weight: bold;
+  font-size: 18px;
+  padding: 1em;
+  /* margin: 1em auto 0 0; */
+}
+
+
 /* .u-section-1 {
   background-image: none;
 }

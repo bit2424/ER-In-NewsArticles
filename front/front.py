@@ -85,16 +85,16 @@ company_categories = [
 ]
 
 class QueryForm(FlaskForm):
-    query = TextAreaField('Query',
+    query = TextAreaField('Digit the descritption for the news you want to obtain:',
                                 validators=[InputRequired(),
                                             Length(min=2,max=200)])
 
     #Parece que este es el formato correcto
-    date_from = DateField('Select the start date for the search', validators=[InputRequired()])
+    date_from = DateField('Select the start date for the search:', validators=[InputRequired()])
 
-    date_to = DateField('Select the end date for the search',validators=[InputRequired()])
+    date_to = DateField('Select the end date for the search:',validators=[InputRequired()])
     
-    industries = SelectMultipleField('Select the categories of the companies you want to choose',choices = company_categories, default = ['1', '63'],)
+    industries = SelectMultipleField('Select the categories of the companies you want to see in the results:',choices = company_categories, default = ['1', '63'],)
 
     submit = SubmitField()
 
@@ -129,6 +129,7 @@ def index():
     #companiesOpt = back.getCompanieOpts()
     form = QueryForm()
     context['form'] = form
+    print(form)
     context['Title'] = "Make a Query"
 
     if form.validate_on_submit():

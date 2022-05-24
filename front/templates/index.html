@@ -6,20 +6,54 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Query</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}" media="screen">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
 </head>
 
 
 {% block content %}
     <h1>{% block title %} {{Title}} {% endblock %}</h1>
     
-    <form action="http://localhost:5000/table" method="post">
-        {{wtf.quick_form(form)}}
-    </form> 
+    <div class="form_box"> 
+
+        <form action="http://localhost:5000/table" method="post">
+            
+
+            <div class="form_item">  
+                {{form.query.label}}
+                {{form.query(class="form-control pt-1")}}
+            </div>
+            
+            <div class="form_item">  
+                {{form.date_from.label}}
+                {{form.date_from(class="form-control pt-2")}}
+            </div>
+            
+            <div class="form_item">  
+                {{form.date_to.label}}
+                {{form.date_to(class="form-control pt-2")}}
+            </div>
+            
+            <div class="form_item">  
+                {{form.industries.label}}
+                {{form.industries(class="form-control pt-2")}}
+            </div>
+            
+            <div class="form_item">
+                {{form.submit(class="btn btn-outline-success btn-block")}}
+            </div>
+            
+
+            {#{wtf.quick_form(form)}#}
+        </form> 
+
+    </div>
+    
 
     <!-- <div class="container"> 
         {{wtf.quick_form(form)}}
-    </div> -->
+    </div> -->  
 
 {% endblock %}
