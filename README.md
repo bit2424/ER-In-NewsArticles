@@ -1,8 +1,9 @@
-###About the project:
+## About the project:
 
-We created a tool that allows you to identify companies in news articles that are related to a topic. 
+We created a tool that allows you to identify companies in news articles that are related to a topic.
 
-Execution process:
+
+### Execution process:
 
 First you have to create a virtual enviroment in order to install the required libraries easier.
 Here is a tutorial in how to do it https://docs.python.org/3/tutorial/venv.html
@@ -37,6 +38,17 @@ or filtering with industries:
     "to-date":"2022-05-15",
     "accepted-industries":["Restaurants"]
 }
+
+To execute the frontend execute:
+
+    py front/front.py
+
+Query view:
+![imagen](https://user-images.githubusercontent.com/44851531/170073642-18f4495f-83ee-4d8d-ab23-b8bcb9624ee3.png)
+
+Result view:
+![imagen](https://user-images.githubusercontent.com/44851531/170073741-f0bca536-abe0-4659-ad43-175b29d2fb6c.png)
+
 
 Possible Company Categories (casing is important):
 * Advertising
