@@ -2,6 +2,12 @@
 
 We created a tool that allows you to identify companies in news articles that are related to a topic.
 
+The project was developed to improve the process of bringing investor to the Colombian Pacific Region, identifying them in news articles and then trying to contact them to make new business partners. 
+
+The system was built using python and specifically for the frontend the flask framework, the NLP models were integrated using the Huggingface API.
+
+Based on a query the system consults news using NewsApi; from the selected news we filter the ones that are related to business, tech, and science, with DistilRoBERTa. Then, it identifies the entities mentioned in the news, using BERT-Large, and selects the ones related to organizations or businesses. Next, it collects possible real companies and information to contact them, associated to the entities in the previous step, with the Crunchbase API. At last, we classify the real companies into 62 categories with DistillBert.
+
 
 ### Execution process:
 
