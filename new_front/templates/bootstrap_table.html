@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}" media="screen">
+</head>
+
+<body>
+    {% block content %}
+        <h1>{% block title %} {{Title}} {% endblock %}</h1>
+            <div class="results">
+                {% for elem in elems %}
+                <div class="result">
+
+                    <h4 class="result_title"> 
+                        <b>Word metioned:</b> 
+                        <p>{{ elem.name }}</p> 
+                    </h4>
+                    
+                    </th><h4> Found in following news: </h4>
+                    <ul>
+                        {% for news in elem.news %}
+                            <li class="company_result">
+                                {{news.title}}:
+                                <a href="{{news.url}}"> {{news.url}} </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h4> Companies asociated with the word:</h4>
+                    <ul>
+                        {% for comps in elem.candidates %}
+                            <li class="company_result">
+                                <p> <b class="company_item">Companie name: </b>{{comps.name}}</p>
+                                <p> <b class="company_item">Description: </b> {{comps.description}}</p>
+                                <p> <b class="company_item">Industries related: </b> {{comps.industry}} </p>
+                                <p> <b class="company_item">Social media and contacts: </b></p>
+                                <ul> 
+                                    <li> <a href="{{comps.facebook}}"> {{comps.facebook}}</a> </li>
+                                    <li> <a href="{{comps.linkedin}}"> {{comps.linkedin}} </a> </li>
+                                    <li> <a href="{{comps.twitter}}"> {{comps.twitter}} </a></li>
+                                    <li> <a href="{{comps.website}}"> {{comps.website}} </a></li>
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+            </div>
+    {% endblock %}
+</body>
+</html>

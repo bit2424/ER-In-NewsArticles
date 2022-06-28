@@ -14,7 +14,7 @@ Based on a query the system consults news using NewsApi; from the selected news 
 First you have to create a virtual enviroment in order to install the required libraries easier.
 Here is a tutorial in how to do it https://docs.python.org/3/tutorial/venv.html
 
-my_env\Scripts\activate
+    my_env\Scripts\activate
 
 If necesary you can execute the next command to allow the activation of the venv in windows:
 
