@@ -17,7 +17,7 @@
                 <div class="result">
 
                     <h4 class="result_title"> 
-                        <b>Word metioned:</b> 
+                        <b>Companie identified:</b> 
                         <p>{{ elem.name }}</p> 
                     </h4>
                     
@@ -30,10 +30,11 @@
                             </li>
                         {% endfor %}
                     </ul>
+                    
                     <h4> Companies asociated with the word:</h4>
-                    <ul>
+                    <div class="company_results">
                         {% for comps in elem.candidates %}
-                            <li class="company_result">
+                            <div class="company_result">
                                 <p> <b class="company_item">Companie name: </b>{{comps.name}}</p>
                                 <p> <b class="company_item">Description: </b> {{comps.description}}</p>
                                 <p> <b class="company_item">Industries related: </b> {{comps.industry}} </p>
@@ -44,9 +45,9 @@
                                     <li> <a href="{{comps.twitter}}"> {{comps.twitter}} </a></li>
                                     <li> <a href="{{comps.website}}"> {{comps.website}} </a></li>
                                 </ul>
-                            </li>
+                            </div>
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
             {% endfor %}
             </div>

@@ -6,7 +6,7 @@ import json
 from flask import Flask, request
 
 app = Flask(__name__)
-MAX_RELATED_COMPANIES = 2
+MAX_RELATED_COMPANIES = 4
 
 @app.route('/find-companies')
 def findCompaniesInNews():
@@ -16,8 +16,9 @@ def findCompaniesInNews():
     from_date = request_data['from-date']
     to_date = request_data['to-date']
     accepted_industries = request_data['accepted-industries']
+    news_sources = request_data['news-sources']
 
-    news = News.getArticles(query, '','en',to_date,from_date,20)
+    news = News.getArticles(query, '','en',to_date,from_date,20,news_sources)
     # We only care about Sci/Tech or Business news
     Clasificator.addNewsClass(news)
     accepted_news_labels = {'Business','Sci/Tech'}
@@ -43,9 +44,9 @@ def findCompaniesInNews():
                     curr_candidate.update(social_networks)
                     candidates.append(curr_candidate)
                     cnt -= 1
-
-        current['candidates'] = candidates
-        result.append(current)
+        if(len(candidates)>0):
+            current['candidates'] = candidates
+            result.append(current)
     return json.dumps(result)
 
 if __name__ == "__main__":

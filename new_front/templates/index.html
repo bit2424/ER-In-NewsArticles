@@ -19,6 +19,25 @@
     
     <div class="form_box"> 
 
+        <form action="http://localhost:5000/addDomain" method="post">
+            <label class="form_item"> Add the news domains you want to extract news from: </label>
+            <input type="text" name="add"> 
+            <button type="submit" class="btn btn-outline-success" >Add</button>            
+        </form>
+
+        <div class="domain_selector_box">  
+
+            {% for domain in news_domains %}
+
+                <form action="http://localhost:5000/removeDomain" method="post">
+                    <button type="submit" name="{{domain}}" > {{domain}}</button>  
+                    <!-- <input type="checkbox" class="company_type" >  -->
+                </form>  
+        
+            {% endfor %}
+        </div>
+
+
         <form action="http://localhost:5000/updateCategories" method="post">
             <label class="form_item"> Select the company categories you want to obtain: </label>
             <input type="text" name="search"> 
@@ -70,7 +89,7 @@
             </div>
             
             <div class="form_item">
-                {{form.submit(class="btn btn-outline-success btn-block")}}
+                {{form.submit(class="btn btn-lg btn-default btn-outline-success btn-block")}}
             </div>
             
 

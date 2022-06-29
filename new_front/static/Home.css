@@ -30,11 +30,18 @@ body{
   font-size: 15px;
 }
 
+.company_results {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
 .company_result{
   background-color: #ffffff;
   padding: 1em;
   border-radius: 16px;
-  margin: 10px auto 0 0;
+  margin: 10px;
   box-shadow: rgba(57, 61, 65, 0.1) 0px 8px 24px;
 }
 
@@ -61,7 +68,7 @@ body{
 }
 
 .company_selector_box  button {
-  font-size: 1.5vh;
+  font-size: 1.25vh;
   color: white;
   background: gray;
   margin: .3em;
@@ -81,9 +88,29 @@ body{
 }
 
 .company_selected_box  button {
-  font-size: 1.5vh;
+  font-size: 1.25vh;
   color: white;
   background: green;
+  margin: .3em;
+  padding: 1em;
+  border-radius: 10px;
+  flex: 25%;
+  /* min-height: 20vh;
+  min-width: 20vh; */
+}
+
+.domain_selector_box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: row;
+  
+}
+
+.domain_selector_box  button {
+  font-size: 1.2vh;
+  color: rgb(95, 93, 93);
+  background: white;
   margin: .3em;
   padding: 1em;
   border-radius: 10px;

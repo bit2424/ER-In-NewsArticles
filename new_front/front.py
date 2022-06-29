@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from asyncore import compact_traceback
 from ensurepip import bootstrap
 from urllib.parse import urlencode
@@ -19,8 +20,9 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 context = {}
 available_company_categories = []
+news_domains = ["c-span.org","economist.com","apnews.com","bbc.com","techcrunch.com"]
 
-selected_company_categories = []
+form = NULL
 
 company_categories = [
 ('0','Select All'),    
@@ -88,9 +90,10 @@ company_categories = [
 ('62','Trading Companies & Distributors'),
 ]
 
-def updateContext(s_company_categories,a_company_categories):
+def updateContext(s_company_categories,a_company_categories,n_domains):
     context['selected_company_categories'] = s_company_categories
     context['company_categories'] = a_company_categories
+    context['news_domains'] = n_domains
 
 class QueryForm(FlaskForm):
     query = TextAreaField('Digit the descritption for the news you want to obtain:',
@@ -118,11 +121,18 @@ def generateTables():
         date_from = form_out['date_from']
         date_to = form_out['date_to']
         query = form_out['query']
+        news_sources = ''
+        for s in news_domains:
+            if news_sources == '':
+                news_sources = s
+            else:
+                news_sources = news_sources+","+s
         URL = "http://localhost:8080/find-companies"
         data = {'query':query,
                    'from-date':date_from,
                    'to-date':date_to,
-                   'accepted-industries':selected_industries
+                   'accepted-industries':selected_industries,
+                   "news-sources":news_sources
         }
         print()
         r = requests.get(url = URL, json=data)
@@ -147,7 +157,7 @@ def updateCategories():
         else:
             filtered_categories = available_company_categories
 
-        updateContext(selected_company_categories,filtered_categories)
+        updateContext(selected_company_categories,filtered_categories,news_domains)
 
     return redirect(url_for('index'))
 
@@ -166,7 +176,7 @@ def addCategories():
                 available_company_categories.remove(k)
                 selected_company_categories.append(k)
             
-        updateContext(selected_company_categories,available_company_categories)
+        updateContext(selected_company_categories,available_company_categories,news_domains)
 
     return redirect(url_for('index'))
 
@@ -185,18 +195,43 @@ def removeCategories():
                 selected_company_categories.remove(k)
                 available_company_categories.append(k)
             
-        updateContext(selected_company_categories,available_company_categories)
+        updateContext(selected_company_categories,available_company_categories,news_domains)
 
     return redirect(url_for('index'))
 
+@app.route('/addDomain', methods=["POST"])
+def addDomain():
+    
+    if request.method == 'POST':
+        global news_domains
+        form_out = request.form
+        new_domain = form_out['add']+""
+        news_domains.append(new_domain)
+            
+        updateContext(selected_company_categories,available_company_categories,news_domains)
+
+    return redirect(url_for('index'))
+
+@app.route('/removeDomain', methods=["POST"])
+def removeDomain():
+    
+    if request.method == 'POST':
+        global news_domains
+        form_out = request.form
+        for k in form_out:
+            news_domains.remove(k)
+            
+        updateContext(selected_company_categories,available_company_categories,news_domains)
+
+    return redirect(url_for('index'))
 
 
 @app.route('/', methods=["GET", "POST"])
 def index():
     #companiesOpt = back.getCompanieOpts()
-    form = QueryForm()
+    global form
     context['form'] = form
-    print(form)
+
     context['Title'] = "Make a Query"
 
     if form.validate_on_submit():
@@ -209,11 +244,15 @@ def index():
 def initialize():
     temp_company_categories = [s[1] for s in company_categories]
     global available_company_categories
-    global  selected_company_categories 
+    global selected_company_categories
+    global form
+    global news_domains
+    form = QueryForm()
     available_company_categories =  temp_company_categories
     selected_company_categories = []
     context['company_categories'] = available_company_categories
     context['selected_company_categories'] = selected_company_categories
+    context['news_domains'] = news_domains
 
     # selected_industries = []
     # for idx in company_categories:
@@ -221,14 +260,15 @@ def initialize():
     # print(selected_industries)
     # URL = "http://localhost:8080/find-companies"
     # data = {'query':'food',
-    #             'from-date':'2022-05-15',
-    #             'to-date':'2022-04-26',
-    #             'accepted-industries':selected_industries
+    #             'from-date':'2022-06-28',
+    #             'to-date':'2022-06-16',
+    #             'accepted-industries':selected_industries,
+    #             "news-sources":''
     # }
-    # print()
+    # #print()
     # r = requests.get(url = URL, json=data)
     # data = r.json()
-    # print(data,"\n")
+    # #print(data,"\n")
     # context['elems'] = data
     #print(data[0]['candidates'])
     #context['queryResult'] = back.testIdentifyandVerifyCompaniesInNews()

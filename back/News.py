@@ -1,12 +1,14 @@
 from newsapi import NewsApiClient
 
-searchDomains = 'c-span.org,economist.com,apnews.com,bbc.com,techcrunch.com'
+
 
 #The keys of the collection of articles are ['status', 'totalResults', 'articles'])
 #The keys of one article are ['source', 'author', 'title', 'description', 'url', 'urlToImage', 'publishedAt', 'content']
-def getArticles(newsTopic,newsSources,newsLanguge, newsFromDate , newsTillDate, numbResults):
+def getArticles(newsTopic,newsSources,newsLanguge, newsFromDate , newsTillDate, numbResults, searchDomains):
     # Init
     newsapi = NewsApiClient(api_key='43a1c14e338642f0a53f493c8814b7e5')
+    if len(searchDomains) == 0:
+        searchDomains = 'c-span.org,economist.com,apnews.com,bbc.com,techcrunch.com'
 
     # /v2/top-headlines
     #top_headlines = newsapi.get_top_headlines(  q=newsTopic, sources=newsSources, language=newsLanguge)
