@@ -5,5 +5,7 @@ flask-wtf
 newsapi-python
 transformers
 torch
+sphinx
 JyServer
 asgiref
+
