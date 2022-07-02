@@ -1,6 +1,9 @@
 flask
+aioflask
 flask-bootstrap
 flask-wtf
 newsapi-python
 transformers
 torch
+JyServer
+asgiref

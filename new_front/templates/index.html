@@ -6,18 +6,18 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Query</title>
+  <title>{{Title}}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}" media="screen">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     
 </head>
 
 
-{% block content %}
+<body>
     <h1>{% block title %} {{Title}} {% endblock %}</h1>
     
     
-    <div class="form_box"> 
+    <div class="form_box" id="form_box" style="display: {{notLoading}};"> 
 
         <form action="http://localhost:5000/addDomain" method="post">
             <label class="form_item"> Add the news domains you want to extract news from: </label>
@@ -89,7 +89,7 @@
             </div>
             
             <div class="form_item">
-                {{form.submit(class="btn btn-lg btn-default btn-outline-success btn-block")}}
+                <button type="submit" class="btn btn-lg btn-default btn-outline-success btn-block"> Submit</button>  
             </div>
             
 
@@ -97,10 +97,11 @@
         </form> 
 
     </div>
+
+    <form action="http://localhost:5000/addCategories" method="post">
+        <button type="submit"  > {{comp}}</button>  
+    </form>  
     
+    <div class="loader" id="loader" style="display: {{Loading}};"></div> 
 
-    <!-- <div class="container"> 
-        {{wtf.quick_form(form)}}
-    </div> -->  
-
-{% endblock %}
+</body>

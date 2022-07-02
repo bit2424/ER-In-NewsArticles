@@ -12,6 +12,11 @@
 <body>
     {% block content %}
         <h1>{% block title %} {{Title}} {% endblock %}</h1>
+        
+        <div class="result">
+            <label class="form_item"> The results for the query "{{Query}}" are: </label>
+        </div>
+
             <div class="results">
                 {% for elem in elems %}
                 <div class="result">

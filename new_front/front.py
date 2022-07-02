@@ -7,7 +7,9 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import (StringField, TextAreaField, DateField, SelectMultipleField,SubmitField)
 from wtforms.validators import InputRequired, Length
-
+import jyserver.Flask as jsf
+from time import sleep
+import asyncio
 
 import os
 SECRET_KEY = os.urandom(32)
@@ -90,6 +92,29 @@ company_categories = [
 ('62','Trading Companies & Distributors'),
 ]
 
+# @jsf.use(app)
+# class App:
+
+#     def __init__(self):
+#         self.isLoading = False
+    
+#     # @jsf.task
+#     # def main(self):
+#     #     if(self.isLoading):
+#     #         self.js.document.getElementById("form_box").style.display = "none"
+#     #         self.js.document.getElementById("loader").style.display = "block"
+#     #     else:
+#     #         print("normal")
+#     #         self.js.document.getElementById("form_box").style.display = "block"
+#     #         self.js.document.getElementById("loader").style.display = "none"
+
+
+#     def loading(self,load):
+#         print("loading.....................................")
+#         self.isLoading = load
+        
+
+
 def updateContext(s_company_categories,a_company_categories,n_domains):
     context['selected_company_categories'] = s_company_categories
     context['company_categories'] = a_company_categories
@@ -109,46 +134,13 @@ class QueryForm(FlaskForm):
 
     submit = SubmitField()
 
-@app.route("/table", methods=["GET", "POST"])
-def generateTables():
-    if request.method == 'POST':
-        form_out = request.form
-        print(form_out)
-        
-        #Get the selected industries
-        selected_industries = selected_company_categories
-
-        date_from = form_out['date_from']
-        date_to = form_out['date_to']
-        query = form_out['query']
-        news_sources = ''
-        for s in news_domains:
-            if news_sources == '':
-                news_sources = s
-            else:
-                news_sources = news_sources+","+s
-        URL = "http://localhost:8080/find-companies"
-        data = {'query':query,
-                   'from-date':date_from,
-                   'to-date':date_to,
-                   'accepted-industries':selected_industries,
-                   "news-sources":news_sources
-        }
-        print()
-        r = requests.get(url = URL, json=data)
-        data = r.json()
-        context['elems'] = data
-    
-    context['Title'] = "Results for the query"
-    return render_template("bootstrap_table.html",**context)
-
 
 @app.route('/updateCategories', methods=["GET", "POST"])
 def updateCategories():
     
     if request.method == 'POST':
         form_out = request.form
-        print("Here is the form out: ", form_out)
+        #print("Here is the form out: ", form_out)
         search = form_out['search']+""
         search = search.lower()
         filtered_categories = []
@@ -226,19 +218,72 @@ def removeDomain():
     return redirect(url_for('index'))
 
 
+async def find_companies(URL,data):
+    print()
+    r = requests.get(url = URL, json=data)
+    data = r.json()
+    context['elems'] = data
+    generateTables()
+
+
+@app.route("/table", methods=["GET", "POST"])
+async def generateTables():
+
+    if request.method == 'POST':
+        form_out = request.form
+        #print(form_out)
+        #Get the selected industries
+        selected_industries = selected_company_categories
+
+        date_from = form_out['date_from']
+        date_to = form_out['date_to']
+        query = form_out['query']
+        news_sources = ''
+
+        for s in news_domains:
+            if news_sources == '':
+                news_sources = s
+            else:
+                news_sources = news_sources+","+s
+        
+        URL = "http://localhost:8080/find-companies"
+        data = {'query':query,
+                   'from-date':date_from,
+                   'to-date':date_to,
+                   'accepted-industries':selected_industries,
+                   "news-sources":news_sources
+        }
+        
+        context['Query'] = query
+        context['Title'] = "Loading..."
+        context['Loading'] = "block"
+        context['notLoading'] = "none"
+
+        await find_companies(URL,data)
+        
+
+    
+    return render_template("bootstrap_table.html",**context)
+
 @app.route('/', methods=["GET", "POST"])
-def index():
+async def index():
     #companiesOpt = back.getCompanieOpts()
-    global form
-    context['form'] = form
-
+    
     context['Title'] = "Make a Query"
-
+    
     if form.validate_on_submit():
-        flash('The query is being preformed')
+        context['Title'] = "Results for the query"
         return redirect('bootstrap_table.html',**context)
 
     return render_template('index.html',**context)
+
+@app.before_request
+def update():
+    global form
+    context['form'] = form
+    context['Loading'] = "none"
+    context['notLoading'] = "block"
+
 
 @app.before_first_request
 def initialize():
@@ -274,4 +319,4 @@ def initialize():
     #context['queryResult'] = back.testIdentifyandVerifyCompaniesInNews()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    asyncio.run(app.run(debug=True))
