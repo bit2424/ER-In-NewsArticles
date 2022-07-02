@@ -6,7 +6,7 @@ import Clasificator
 
 
 def main():
-    dataSetCreation()
+    testNewsArticlesRetrieval()
 
 def getCompanieOpts(query):
     results = {}
@@ -96,16 +96,6 @@ def testCompanyIdentification(entry):
     example = entry
     results = Identificator.identify_companies_in_text(example)
     print(results)
-
-def dataSetCreation():
-    news = News.getArticles('Investment Banking & Brokerage', '','en','2022-07-01','2022-06-05',20,[])
-    # Clasificator.addNewsClass(articles)
-    # accepted_news_labels = {'Business','Sci/Tech'}
-    # news = [n for n in articles if n['class'][0]['label'] in accepted_news_labels]
-
-    with open('dataset.txt', 'a',encoding='utf-8') as f:
-        for article_content in news:
-            f.write(article_content['title'].replace(',',' ')+"\n")
 
 if __name__ == "__main__":
     main()
