@@ -5,7 +5,7 @@
 body{
   padding: 1em;
   background-color: EEF1F2;
-  color: #1F2231;
+  color: black;
 }
 .results{
   display: flex;
@@ -14,7 +14,7 @@ body{
 }
 
 .result{
-  background-color: #ffffff;
+  background-color: #ADD7F6;
   padding: 1em;
   border-radius: 12px;
   box-shadow: rgba(57, 61, 65, 0.3) 0px 8px 24px;
@@ -22,13 +22,15 @@ body{
 
 
 .result_title{
-  font-size: 23px;
+  color: #1D1E18;
+  font-size: 25px;
 }
 
 .company_item{
   font-weight: bold;
   font-size: 15px;
 }
+
 
 .company_results {
   display: flex;
@@ -38,11 +40,26 @@ body{
 }
 
 .company_result{
-  background-color: #ffffff;
+  background-color: #87BFFF;
   padding: 1em;
   border-radius: 16px;
   margin: 10px;
-  box-shadow: rgba(57, 61, 65, 0.1) 0px 8px 24px;
+  flex-basis: 30em;
+	flex-grow: 0;
+	flex-shrink: 0;
+  overflow: auto;
+}
+
+.news{
+  display: inline-block;
+  background-color: #87BFFF;
+  padding: 1em;
+  border-radius: 16px;
+  margin: 10px;
+  flex-basis: 30em;
+	flex-grow: 0;
+	flex-shrink: 0;
+  overflow: auto;
 }
 
 .form_box{
@@ -79,6 +96,12 @@ body{
   min-width: 20vh; */
 }
 
+.company_selector_box  button:hover{
+  background:rgb(97, 181, 195);
+  color:#fff;
+  box-shadow:0px 10px 25px rgba(46,223,229,0.445);
+}
+
 .company_selected_box {
   display: flex;
   flex-wrap: wrap;
@@ -90,13 +113,19 @@ body{
 .company_selected_box  button {
   font-size: 1.25vh;
   color: white;
-  background: green;
+  background: rgb(97, 181, 195);
   margin: .3em;
   padding: 1em;
   border-radius: 10px;
   flex: 25%;
   /* min-height: 20vh;
   min-width: 20vh; */
+}
+
+.company_selected_box  button:hover{
+  background:gray;
+  color:#fff;
+  box-shadow:0px 10px 25px grey;
 }
 
 .domain_selector_box {
@@ -104,19 +133,24 @@ body{
   flex-wrap: wrap;
   align-items: flex-start;
   flex-direction: row;
-  
 }
 
 .domain_selector_box  button {
   font-size: 1.2vh;
-  color: rgb(95, 93, 93);
-  background: white;
+  color: white;
+  background: rgb(97, 181, 195);
   margin: .3em;
   padding: 1em;
   border-radius: 10px;
   flex: 25%;
   /* min-height: 20vh;
   min-width: 20vh; */
+}
+
+.domain_selector_box  button:hover{
+  background:gray;
+  color:#fff;
+  box-shadow:0px 10px 25px grey;
 }
 
 .loader {
@@ -131,7 +165,15 @@ body{
   animation: spin 2s linear infinite;
 }
 
+.mitad {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+

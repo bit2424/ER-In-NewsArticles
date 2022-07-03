@@ -20,9 +20,18 @@
     <div class="form_box" id="form_box" style="display: {{notLoading}};"> 
 
         <form action="http://localhost:5000/addDomain" method="post">
-            <label class="form_item"> Add the news domains you want to extract news from: </label>
-            <input type="text" name="add"> 
-            <button type="submit" class="btn btn-outline-success" >Add</button>            
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label class="form_item"> Add the news domains you want to extract news from: </label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" name="add"> 
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-outline-success" >Add</button>            
+                </div>
+                
+            </div>
         </form>
 
         <div class="domain_selector_box">  
@@ -39,9 +48,17 @@
 
 
         <form action="http://localhost:5000/updateCategories" method="post">
-            <label class="form_item"> Select the company categories you want to obtain: </label>
-            <input type="text" name="search"> 
-            <button type="submit" class="btn btn-outline-success" >Search</button>            
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label class="form_item"> Select the company categories you want to obtain: </label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" name="search"> 
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-outline-success" >Search</button>            
+                </div>
+            </div>
         </form>
 
         
@@ -73,34 +90,47 @@
 
         <form action="http://localhost:5000/table" method="post">
 
-            <div class="form_item">  
-                {{form.query.label}}
-                {{form.query(class="form-control pt-1")}}
-            </div>
-            
-            <div class="form_item">  
-                {{form.date_from.label}}
-                {{form.date_from(class="form-control pt-2")}}
-            </div>
-            
-            <div class="form_item">  
-                {{form.date_to.label}}
-                {{form.date_to(class="form-control pt-2")}}
+            <div class="form_item">
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">  
+                        {{form.query.label}}
+                    </div>
+                    <div class="col">  
+                        {{form.query(class="form-control pt-1")}}
+                    </div>
+                </div>
             </div>
             
             <div class="form_item">
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">  
+                        {{form.date_from.label}}
+                    </div>
+                    <div class="col-auto">  
+                        {{form.date_from(class="form-control pt-2")}}
+                    </div>
+                </div>  
+            </div>
+            
+            <div class="form_item">
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        {{form.date_to.label}}
+                    </div>
+                    <div class="col-auto">
+                        {{form.date_to(class="form-control pt-2")}}
+                    </div>
+                </div> 
+            </div>
+            
+            <div class="form_item mitad">
                 <button type="submit" class="btn btn-lg btn-default btn-outline-success btn-block"> Submit</button>  
             </div>
             
 
-            {#{wtf.quick_form(form)}#}
         </form> 
 
     </div>
-
-    <form action="http://localhost:5000/addCategories" method="post">
-        <button type="submit"  > {{comp}}</button>  
-    </form>  
     
     <div class="loader" id="loader" style="display: {{Loading}};"></div> 
 

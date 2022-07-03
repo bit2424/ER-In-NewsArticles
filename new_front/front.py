@@ -315,7 +315,7 @@ def initialize():
     # data = r.json()
     # #print(data,"\n")
     # context['elems'] = data
-    #print(data[0]['candidates'])
+    # print(data[0]['candidates'])
     #context['queryResult'] = back.testIdentifyandVerifyCompaniesInNews()
 
 if __name__ == "__main__":

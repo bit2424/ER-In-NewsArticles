@@ -80,7 +80,7 @@ def getCompanySocialNetworks(uuid):
   }
 
 
-#Search for a group of companies from Europe, I dont know yet how to ge companies from other places
+#Search for a group of companies from Europe, I dont know yet how to get companies from other places
 #
 #A data['entities'] has keys ['uuid', 'properties']
 #If you get the properties for a particular entity it has keys ['identifier', 'short_description', 'rank_org', 'location_identifiers']
